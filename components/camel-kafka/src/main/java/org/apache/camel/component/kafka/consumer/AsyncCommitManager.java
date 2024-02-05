@@ -55,12 +55,9 @@ public class AsyncCommitManager extends AbstractCommitManager {
 
     @Override
     public void commit(TopicPartition partition) {
-        Long offset = offsetCache.getOffset(partition);
-        if (offset == null) {
-            return;
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Auto commit to offset {} from topic {} is disabled (NO-OP)", threadId, partition.topic());
         }
-
-        commitAsync(consumer, partition, offset);
     }
 
     private void commitAsync(Consumer<?, ?> consumer, TopicPartition partition, long partitionLastOffset) {
